@@ -1,15 +1,17 @@
 # CSE330
-REPLACE-THIS-TEXT-WITH-YOUR-STUDENT-ID
-
-REPLACE-THIS-TEXT-WITH-YOUR-PARTNERS-STUDENT-ID-IF-WORKING-IN-A-GROUP
+### Student IDs:
+Asher Baraban: 474257 <br>
+Henry Shuster: 475902
 
 ### Rubric
 
 Languages/Frameworks Used (25 points): <br>
-React (10 Points) <br>
-Express (10 Points) <br>
-MySQL (0 Points) <br>
-Rest/iex Cloud API (5 Points) <br>
+<ul>
+  <list> React (10 Points)</list> <br> 
+  <list>Express (10 Points)</list> <br> 
+<list> MySQL (0 Points)</list> <br>
+<list> Rest/iex Cloud API (5 Points)</list> <br>
+<ul>
 <br>
 Functionality (65 Points): <br>
 User (25 Points): <br>
