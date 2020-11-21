@@ -6,12 +6,12 @@ Henry Shuster: 475902
 ### Rubric
 
 Languages/Frameworks Used (25 points): <br>
-<ul>
+<ol>
   <list> React (10 Points)</list> <br> 
   <list>Express (10 Points)</list> <br> 
 <list> MySQL (0 Points)</list> <br>
 <list> Rest/iex Cloud API (5 Points)</list> <br>
-<ul>
+</ol>
 <br>
 Functionality (65 Points): <br>
 User (25 Points): <br>
