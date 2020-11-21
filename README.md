@@ -2,6 +2,7 @@
 REPLACE-THIS-TEXT-WITH-YOUR-STUDENT-ID
 
 REPLACE-THIS-TEXT-WITH-YOUR-PARTNERS-STUDENT-ID-IF-WORKING-IN-A-GROUP
+
 Languages/Frameworks Used (25 points):
 React (10 Points)
 Express (10 Points)
@@ -25,3 +26,5 @@ Passwords are Salted and Hashed (2 Points)
 Pages Pass HTML Validators (2 Points)
 Code is well formatted and easy to read (3 Points)
 Site is easy to navigate (3 Points)
+
+TA Approval 11/21: TA Name: Olivia Schotz
