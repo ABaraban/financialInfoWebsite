@@ -3,12 +3,12 @@
 Asher Baraban: 474257 <br>
 Henry Shuster: 475902
 
-### Rubric
+## Rubric
 
 Languages/Frameworks Used (25 points): <br>
 <ol>
-  <list> React (10 Points)</list> <br> 
-  <list>Express (10 Points)</list> <br> 
+ <list> React (10 Points)</list> <br> 
+ <list>Express (10 Points)</list> <br> 
 <list> MySQL (0 Points)</list> <br>
 <list> Rest/iex Cloud API (5 Points)</list> <br>
 </ol>
