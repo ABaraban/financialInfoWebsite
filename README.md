@@ -13,7 +13,7 @@ Languages/Frameworks Used (25 points):
 <list> Rest/iex Cloud API (5 Points)</list> <br>
 </ol>
 <br>
-Functionality (60 Points): <br>
+Functionality (60 Points): <br><br>
  <ol>
   <list>User can register, login, logout (10 Points)</list> <br>
   <list>Users can change their Password (5 Points)</list> <br>
@@ -26,7 +26,7 @@ Functionality (60 Points): <br>
   <list>Users can add a holding, which will be displayed when they log in (5 points)</list> <br>
  </ol>
 <br>
-Best Practices (10 Points): <br>
+Best Practices (10 Points): <br><br>
 <ol>
   <list>Passwords are Salted and Hashed (2 Points)</list> <br>
   <list>Pages Pass HTML Validators (2 Points)</list> <br>
