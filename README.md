@@ -13,7 +13,7 @@ Languages/Frameworks Used (25 points):
  <list> Rest/iex Cloud API (5 Points)</list> <br>
 </ol>
 <br>
-Functionality (60 Points): <br><br>
+Functionality (44 Points): <br><br>
  <ol>
   <list>User can register, login, logout (10 Points)</list> <br>
   <list>Users can change their Password (5 Points)</list> <br>
