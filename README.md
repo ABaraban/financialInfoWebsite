@@ -47,4 +47,4 @@ Creative Portion (16 Points):<br><br>
 </ol>
  
 Turn in rubric on time (5 Points)
-TA Approval 11/21: TA Name: Olivia Schotz
+TA Approval 11/22: TA Name: Clay Mudter
