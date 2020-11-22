@@ -33,5 +33,6 @@ Best Practices (10 Points): <br>
   <list>Code is well formatted and easy to read (3 Points)</list> <br>
   <list>Site is easy to navigate (3 Points)</list> <br>
 <br>
+</ol>
 Turn in rubric on time (5 Points)
 TA Approval 11/21: TA Name: Olivia Schotz
