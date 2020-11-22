@@ -36,9 +36,11 @@ Best Practices (10 Points): <br><br>
 Creative Portion (16 Points):<br><br>
 <ol>
  Option 1 (16 points):<br>
- <list>Site displays a plot of historical data (11 Points)</list> <br>
+ <list>Site displays a plot of historical data (16 Points)</list> <br>
  Option 2 (16 points):<br>
- <list>Users can add number of shares of a holding and they can see their earnings/losses on a day(5 Points) </list> <br>
+ <list>Users can add number of shares of a holding (5 Points) </list> <br>
+ <list>Users can see their earnings and losses on the day (6 Points)</list> <br>
+ <list>Add another metric (P/E ratio etc.) to the website (5 Points) </list><br>
 </ol>
  
 Turn in rubric on time (5 Points)
