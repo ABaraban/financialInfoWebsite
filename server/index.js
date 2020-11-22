@@ -28,8 +28,3 @@ app.post('/api/login', (req,res)=>{
         console.log(result);
     });
 });
-
-
-app.get('http://ec2-52-14-184-36.us-east-2.compute.amazonaws.com:3456/expressbackend', (req,res)=>{
-    console.log("express is working");
-});

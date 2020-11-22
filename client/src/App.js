@@ -1,32 +1,23 @@
 import './App.css';
-import React, {useState, useEffect} from "react";
+import React, {useState} from "react";
 import Axios from 'axios';
+import login from './components/login'
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link,
+  useRouteMatch,
+  useParams
+} from "react-router-dom";
 
 function App() {
-  const [username, setUsername]=useState('');
-  const [password, setPassword]=useState('');
-  const login = ()=>{
-    console.log("helloclient");
-    Axios.post('http://ec2-52-14-184-36.us-east-2.compute.amazonaws.com:3456/api/login', {
-      username:username,
-      password:password,
-    }).then(()=>{
-      alert("Successful login");
-    });
-  };
-  Axios.get('http://ec2-52-14-184-36.us-east-2.compute.amazonaws.com:3456/expressbackend');
+  
   return (
-    <div className="App">
-      <h1>Login</h1>
-      Username:<input onChange={(event)=>{
-        setUsername(event.target.value);
-      }} type="text"></input>
-      Password:<input type="password" onChange={(event)=>{
-      
-        setPassword(event.target.value);
-      }}></input>
-      <button type="submit" onClick={login}>Login</button>
-    </div>
+    <Router>
+      <Route exact path="/homepage" component={login}></Route>
+    </Router>
+    
   );
 }
 
