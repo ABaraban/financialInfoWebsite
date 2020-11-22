@@ -5,7 +5,7 @@ Henry Shuster: 475902
 
 ## Rubric
 
-Languages/Frameworks Used (25 points): <br>
+Languages/Frameworks Used (25 points):
 <ol>
  <list> React (10 Points)</list> <br> 
  <list>Express (10 Points)</list> <br> 
