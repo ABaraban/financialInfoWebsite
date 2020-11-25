@@ -6,7 +6,7 @@ export default class login extends Component{
         this.state={username: "", password: ""}
     }
     submit = ()=>{
-        username=this.state.username;
+        //username=this.state.username;
         Axios.post('http://ec2-52-14-184-36.us-east-2.compute.amazonaws.com:3456/login', {
             username:this.state.username,
             password:this.state.password,
@@ -14,11 +14,11 @@ export default class login extends Component{
         .then(function(response){
             if(response.data=="success"){
                 alert("Logged in");
-                let data=[state.username];
-                props.history.push({
-                    pathname: 'http://ec2-52-14-184-36.us-east-2.compute.amazonaws.com:3000/home',
-                    data: data // your data array of objects
-                  })
+                // let data=[state.username];
+                // props.history.push({
+                //     pathname: 'http://ec2-52-14-184-36.us-east-2.compute.amazonaws.com:3000/home',
+                //     data: data // your data array of objects
+                //   })
                 window.location.href="http://ec2-52-14-184-36.us-east-2.compute.amazonaws.com:3000/home"
             }
             else if(response.data=="wronguser"){
