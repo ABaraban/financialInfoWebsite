@@ -5,6 +5,7 @@ const bodyparser=require('body-parser');
 const port=process.env.PORT||3456;
 const cors=require('cors');
 const bcrypt=require('bcrypt');
+const nodemailer=require('nodemailer');
 app.use(bodyparser.json());
 app.use(bodyparser.urlencoded({extended:true}));
 app.use(express.json());
@@ -15,9 +16,9 @@ app.listen(port,()=>{
 });
 
 const con=mysql.createPool({
-    host: 'localhost',
-    user: 'wustl_inst',
-    password: 'wustl_pass',
+    host: 'ec2-52-14-184-36.us-east-2.compute.amazonaws.com',
+    user: 'user',
+    password: 'password',
     database: 'portfolio'
 });
 app.get('/', (req,res)=>{
@@ -48,6 +49,7 @@ app.post('/login', (req,res)=>{
         });
 });
 app.post('/createUser', (req,res)=>{
+    console.log(con);
     const username=req.body.username;
     const password=req.body.password;
     bcrypt.hash(password,10,function(err,hash){
@@ -64,4 +66,40 @@ app.post('/createUser', (req,res)=>{
         });
     });
     
+});
+app.post('/email', (req,res)=>{
+    let emailreg = new RegExp(/^[\w!#$%&'*+\/=?^_`{|}π~.-]+@([\w\-]+(?:\.[\w\-]+)+)$/);
+        let outcome=0;
+        if(!emailreg.test(req.body.email)){
+            res.send("invalid email");
+        }
+        //WE USED THE CODE FROM https://www.w3schools.com/nodejs/nodejs_email.asp AS A TEMPLATE FOR THE CODE BELOW
+        var transporter = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+              user: 'wustl330portfolio@gmail.com',
+              pass: 'Portfolio'
+            }
+        });
+        var mailOptions = {
+            from: 'wustl330portfolio@gmail.com',
+            to: req.body.email,
+            subject: 'Invite to portfolio app',
+            text: "You are invited to the wustl portfolio app. Click this link to join: "+req.body.url
+          };
+          try{
+            transporter.sendMail(mailOptions, function(error, info){
+                if(error){
+                    console.log(error)
+                }
+                else{
+                  console.log('Email sent: ' + info.response);
+                  res.send("success");
+                } 
+              });
+          }
+          catch(err){
+              res.send("Email failed to send");
+          }
+       
 });

@@ -14,14 +14,14 @@ export default class createUser extends Component{
         this.state={username: "", password: ""}
     }
     submit = ()=>{
-        Axios.post('http://ec2-52-14-184-36.us-east-2.compute.amazonaws.com:3456/createUser', {
+        Axios.post('http://localhost:3456/createUser', {
             username:this.state.username,
             password:this.state.password,
         })
         .then(function(response){
             if(response.data=="success"){
                 alert("User Created");
-                window.location.href="http://ec2-52-14-184-36.us-east-2.compute.amazonaws.com:3000/login"
+                window.location.href="http://localhost:3000/login"
             }
             else{
                 alert("User not created. Likely a duplicate username. Please try again.");
