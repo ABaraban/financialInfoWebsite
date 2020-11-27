@@ -13,10 +13,11 @@ import {
     useRouteMatch,
     useParams
   } from "react-router-dom";
+  //The idea for this graph came from FILL IN LINK HERE
   class Graph extends Component {
     constructor(props){
       super(props);
-      console.log(props.data);
+      console.log(props);
     }
     render(){
       return(
@@ -61,7 +62,7 @@ import {
 export default class home extends Component{
     constructor(props){
         super(props);
-        console.log(props);
+        console.log(props.location.state);
         this.state={
           ticker:"",
           email:"",
@@ -88,36 +89,45 @@ export default class home extends Component{
       .then(res=>res.json())
       .then(response=>{
         console.log(response);
-        rows=response;
-        function unpack(rows, key) {
-          return rows.map(function(row) { return row[key]; });
+        if(response.length<=25){
+          alert("There is not enough data for that ticker to display a graph. Sorry.")
         }
-        var trace1 = {
-          type: "scatter",
-          mode: "lines",
-          name: e.target.id+ ' High',
-          x: unpack(rows, 'date'),
-          y: unpack(rows, 'uHigh'),
-          line: {color: '#17BECF'}
+        else{
+          rows=response;
+          function unpack(rows, key) {
+            return rows.map(function(row) { return row[key]; });
+          }
+          var trace1 = {
+            type: "scatter",
+            mode: "lines",
+            name: e.target.id+ ' High',
+            x: unpack(rows, 'date'),
+            y: unpack(rows, 'uHigh'),
+            line: {color: '#17BECF'}
+          }
+    
+          var trace2 = {
+            type: "scatter",
+            mode: "lines",
+            name: e.target.id+' Low',
+            x: unpack(rows, 'date'),
+            y: unpack(rows, 'uLow'),
+            line: {color: '#7F7F7F'}
+          }
+          var data = [trace1,trace2];
+          
+          console.log("clicked");
+          ReactDOM.render(
+            <Graph data ={data}/>,
+            document.getElementById('graph')
+          );
         }
-  
-        var trace2 = {
-          type: "scatter",
-          mode: "lines",
-          name: e.target.id+' Low',
-          x: unpack(rows, 'date'),
-          y: unpack(rows, 'uLow'),
-          line: {color: '#7F7F7F'}
-        }
-        var data = [trace1,trace2];
         
-        console.log("clicked");
-        ReactDOM.render(
-          <Graph data ={data}/>,
-          document.getElementById('graph')
-        );
       })
       
+    }
+    addFavorite = ()=>{
+      console.log("addfav");
     }
     submit = ()=>{
       let status=true;
@@ -140,9 +150,16 @@ export default class home extends Component{
         // let price=React.createElement("p", null, 'Price:' +response.iexRealtimePrice);
         // let name=React.createElement("h3", null, response.companyName);
         let metrics=React.createElement("div",{
+          // id:response.symbol,
+          // onClick:this.displayGraph,
+        }, React.createElement("span",{
           id:response.symbol,
           onClick:this.displayGraph,
-        }, response.companyName+ " Price: " +response.latestPrice)
+        },response.companyName+ " Price: " +response.latestPrice),
+        React.createElement("button",{
+          id:this.props.location.state,
+          onClick:this.addFavorite,
+        }, "Add favorite"))
         ReactDOM.render(metrics, document.getElementById("metrics"));
       })
     };
@@ -174,6 +191,7 @@ export default class home extends Component{
             <br></br>
             Email:<input onChange={this.onChangeEmail} type="text" value={this.state.email}></input>
             <button type="submit" onClick={this.email}>Invite A New User</button>
+            <h4>Click on a ticker to display its 5 year graph.</h4>
         </div>
         )   
     }
