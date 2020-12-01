@@ -4,6 +4,7 @@ import login from './login';
 import CreatePlotlyComponent from 'react-plotly.js/factory';
 import Plot from 'react-plotly.js';
 import Axios from 'axios';
+import {std} from 'mathjs';
 
 import {
     BrowserRouter as Router,
@@ -66,7 +67,50 @@ export default class home extends Component{
         this.state={
           ticker:"",
           email:"",
+          favorites:[],
         }
+        
+    }
+    componentDidMount=()=>{
+      console.log("LOADED");
+      Axios.post("http://localhost:3456/loadfavorites",{
+      })
+      .then(res=>{
+        console.log(res);
+        let favs=[];
+        for(let i=0; i<res.data.length;++i){
+            let url ='https://sandbox.iexapis.com/stable/stock/'+res.data[i].ticker+'/quote?token=Tpk_96d9d438d78b4a3fbc67ab52de7ac67e';
+            fetch(url,{
+              method: "GET"
+            })
+            .then(res=>res.json())
+            .then(response=>{
+              console.log(response);
+              let avg=0;
+              let sum=0;
+              let devarr=[];
+              let urlnew='https://sandbox.iexapis.com/stable/stock/'+response.symbol+'/chart/5y?token=Tpk_57e77d563cb543d6971bd4f479ad64e9';
+              fetch(urlnew,{
+                method: "GET"
+              })
+              .then(res=>res.json())
+              .then(resp=>{
+                console.log(resp);
+                for(let i=0; i<resp.length;++i){
+                  sum+=(resp[i].high+resp[i].low)/2.000000;
+                  devarr.push((resp[i].high+resp[i].low)/2.000000);
+                }
+                avg=sum/(resp.length-1);
+                favs.push(<span id={response.symbol} onClick={this.displayGraph}>{response.companyName+" Price: "+response.latestPrice+" 5Y Avg. Price : $"+Math.round(avg)+"  5Y Std. Dev.: $"+Math.round(std(devarr))}</span>);
+                favs.push(<br></br>);
+                this.setState({
+                  favorites:favs
+                });
+              })
+            });
+        }
+        
+      })
     }
     onChangeTicker = (e)=>{
         this.setState({
@@ -82,7 +126,7 @@ export default class home extends Component{
     displayGraph= (e)=>{
       console.log(e.target.id);
       let rows;
-      let url='https://sandbox.iexapis.com/stable/stock/'+e.target.id+'/chart/5y?token=Tpk_57e77d563cb543d6971bd4f479ad64e9';
+      let url='https://sandbox.iexapis.com/stable/stock/'+e.target.id+'/chart/5y?token=Tpk_96d9d438d78b4a3fbc67ab52de7ac67e';
       fetch(url,{
         method: "GET"
       })
@@ -126,12 +170,27 @@ export default class home extends Component{
       })
       
     }
-    addFavorite = ()=>{
-      console.log("addfav");
+    addFavorite = (e)=>{
+      console.log(this.props.location.state);
+      console.log(e.target.className);
+      Axios.post('http://localhost:3456/addfav', {
+            user:this.props.location.state,
+            ticker:e.target.className
+        })
+        .then(function(response){
+          if(response.data=="success"){
+            alert(e.target.className+" is now one of your favorite stocks!");
+          }
+          else{
+            alert("Not added. Likely a duplicate.");
+          }
+          console.log(response);
+        });
+        this.componentDidMount();
     }
     submit = ()=>{
       let status=true;
-      let url ='https://sandbox.iexapis.com/stable/stock/'+this.state.ticker+'/quote?token=Tpk_57e77d563cb543d6971bd4f479ad64e9';
+      let url ='https://sandbox.iexapis.com/stable/stock/'+this.state.ticker+'/quote?token=Tpk_96d9d438d78b4a3fbc67ab52de7ac67e';
       fetch(url,{
         method: "GET"
       })
@@ -147,20 +206,33 @@ export default class home extends Component{
       })
       .then(response=>{
         console.log(response);
-        // let price=React.createElement("p", null, 'Price:' +response.iexRealtimePrice);
-        // let name=React.createElement("h3", null, response.companyName);
-        let metrics=React.createElement("div",{
-          // id:response.symbol,
-          // onClick:this.displayGraph,
-        }, React.createElement("span",{
-          id:response.symbol,
-          onClick:this.displayGraph,
-        },response.companyName+ " Price: " +response.latestPrice),
-        React.createElement("button",{
-          id:this.props.location.state,
-          onClick:this.addFavorite,
-        }, "Add favorite"))
-        ReactDOM.render(metrics, document.getElementById("metrics"));
+        let avg=0;
+        let sum=0;
+        let devarr=[];
+        let urlnew='https://sandbox.iexapis.com/stable/stock/'+response.symbol+'/chart/5y?token=Tpk_57e77d563cb543d6971bd4f479ad64e9';
+        fetch(urlnew,{
+          method: "GET"
+        })
+        .then(res=>res.json())
+        .then(resp=>{
+          console.log(resp);
+          for(let i=0; i<resp.length;++i){
+            sum+=(resp[i].high+resp[i].low)/2.000000;
+            devarr.push((resp[i].high+resp[i].low)/2.000000);
+          }
+          avg=sum/(resp.length-1);
+          let metrics=React.createElement("div",{
+          }, React.createElement("span",{
+            id:response.symbol,
+            onClick:this.displayGraph,
+          },response.companyName+" Current Price: $" +response.latestPrice+" 5Y Avg. Price : $"+Math.round(avg)+"  5Y Std. Dev.: $"+Math.round(std(devarr))),
+          React.createElement("button",{
+            className:response.symbol,
+            onClick:this.addFavorite,
+          }, "Add favorite"))
+          ReactDOM.render(metrics, document.getElementById("metrics"));
+        })
+        
       })
     };
     email = ()=>{
@@ -186,12 +258,23 @@ export default class home extends Component{
         return(
         <div className="App">
           <h1>Your Portfolio</h1>
+          <h3>Invite a New User</h3>
+          Email:<input onChange={this.onChangeEmail} type="text" value={this.state.email}></input>
+            <button type="submit" onClick={this.email}>Invite A New User</button>
+            <br></br>
+          <h3>Favorites</h3>
+          {
+              this.state.favorites.map((fav, index)=>(
+                fav
+              ))}
+              <h3>Search</h3>
             Ticker:<input onChange={this.onChangeTicker} type="text" value={this.state.ticker}></input>
             <button type="submit" onClick={this.submit}>Search</button>
-            <br></br>
-            Email:<input onChange={this.onChangeEmail} type="text" value={this.state.email}></input>
-            <button type="submit" onClick={this.email}>Invite A New User</button>
             <h4>Click on a ticker to display its 5 year graph.</h4>
+
+            
+            
+            
         </div>
         )   
     }

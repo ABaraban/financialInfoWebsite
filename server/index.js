@@ -103,3 +103,24 @@ app.post('/email', (req,res)=>{
           }
        
 });
+app.post('/addfav', (req,res)=>{
+    const ticker=req.body.ticker;
+    const username=req.body.user;
+    const sqlinsert="INSERT INTO favorites (ticker, username) VALUES (?,?)"
+        con.query(sqlinsert,[ticker, username],(err, result)=>{
+            if(result==undefined){
+                res.send('failure');
+            }
+            else{
+                res.send('success');
+            }
+            console.log(result);
+        });
+});
+app.post('/loadfavorites',(req,res)=>{
+    const sqlselect="SELECT * from favorites"
+        con.query(sqlselect,(err, result)=>{
+            res.send(result);
+            console.log(result);
+        });
+});

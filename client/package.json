@@ -13,6 +13,7 @@
     "@testing-library/react": "^11.2.2",
     "@testing-library/user-event": "^12.2.2",
     "axios": "^0.21.0",
+    "mathjs": "^8.0.1",
     "plotly.js": "^1.57.1",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
