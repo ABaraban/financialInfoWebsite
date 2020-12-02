@@ -118,9 +118,27 @@ app.post('/addfav', (req,res)=>{
         });
 });
 app.post('/loadfavorites',(req,res)=>{
-    const sqlselect="SELECT * from favorites"
-        con.query(sqlselect,(err, result)=>{
+    console.log(req.body.user);
+    const sqlselect="SELECT * from favorites WHERE username=?"
+        con.query(sqlselect,req.body.user,(err, result)=>{
             res.send(result);
             console.log(result);
         });
 });
+app.post('/changepass',(req,res)=>{
+    const sqlinsert="UPDATE users SET password=? WHERE username=?"
+    console.log(req.body.newpass);
+    console.log(req.body.user);
+        bcrypt.hash(req.body.newpass,10,function(err,hash){
+            if(err) console.log(err);
+            con.query(sqlinsert,[hash, req.body.user],(err, result)=>{
+                if(result==undefined){
+                    res.send('failure');
+                }
+                else{
+                    res.send('success');
+                }
+                console.log(result);
+            });
+        });
+})

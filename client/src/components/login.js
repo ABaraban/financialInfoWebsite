@@ -1,5 +1,6 @@
 import React, {useState, Component} from "react";
 import Axios from 'axios';
+import ReactDOM from 'react-dom';
 import {
     BrowserRouter as Router,
     Switch,
@@ -13,6 +14,12 @@ export default class login extends Component{
         super(props);
         this.state={username: "", password: ""}
     }
+    componentDidMount(){
+        ReactDOM.render("",
+        document.getElementById("metrics"));
+        ReactDOM.render("",
+        document.getElementById("graph"));
+    }
     submit = ()=>{
         //username=this.state.username;
         let propState= this.props;
@@ -23,19 +30,13 @@ export default class login extends Component{
         .then(function(response){
             if(response.data=="success"){
                 alert("Logged in");
-                //window.location.href="http://localhost:3000/home"
-                // propState.Router.push({
-                //     pathname: '/home',
-                //     state: {
-                //       id: 7,
-                //       color: 'green'
-                //     }
-                //   })
             }
             else if(response.data=="wronguser"){
+                window.location.href="http://localhost:3000/login";
                 alert("That username does not exist. Please create a user or try again.");
             }
             else if(response.data=="wrongpass"){
+                window.location.href="http://localhost:3000/login";
                 alert("Wrong password. Please try again");
             }
         });
@@ -60,11 +61,10 @@ export default class login extends Component{
             <Link
             to={{
                 pathname:"/home",
-                state:this.state.username
-             }} >
-            <button type="submit" onClick={()=>{
-                this.submit();
-            }}>Login</button>
+                state:this.state.username,
+             }}
+             onClick={this.submit} className="button" >
+            Login
             </Link>
             <br></br>
             <form action="http://localhost:3000/createUser">

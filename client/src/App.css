@@ -11,8 +11,12 @@ body{
 }
 
 
-
-button,input,select {
+.button{
+  padding: .3%;
+  font-size:14px;
+  text-decoration: none;
+}
+button,input,select, .button {
   transition-duration: 0.4s;
   display: inline-block;
   border-radius: 4px;

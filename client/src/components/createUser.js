@@ -1,5 +1,6 @@
 import React, {useState, Component} from "react";
 import Axios from 'axios';
+import ReactDOM from 'react-dom';
 import {
     BrowserRouter as Router,
     Switch,
@@ -12,6 +13,12 @@ export default class createUser extends Component{
     constructor(props){
         super(props);
         this.state={username: "", password: ""}
+    }
+    componentDidMount(){
+        ReactDOM.render("",
+        document.getElementById("metrics"));
+        ReactDOM.render("",
+        document.getElementById("graph"));
     }
     submit = ()=>{
         Axios.post('http://localhost:3456/createUser', {

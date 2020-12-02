@@ -72,14 +72,18 @@ export default class home extends Component{
         
     }
     componentDidMount=()=>{
+      if(this.props.location.state==""){
+        window.location.href="http://localhost:3000/login"
+      }
       console.log("LOADED");
       Axios.post("http://localhost:3456/loadfavorites",{
+        user:this.props.location.state
       })
       .then(res=>{
         console.log(res);
         let favs=[];
         for(let i=0; i<res.data.length;++i){
-            let url ='https://sandbox.iexapis.com/stable/stock/'+res.data[i].ticker+'/quote?token=Tpk_96d9d438d78b4a3fbc67ab52de7ac67e';
+            let url ='https://sandbox.iexapis.com/stable/stock/'+res.data[i].ticker+'/quote?token=Tpk_57e77d563cb543d6971bd4f479ad64e9';
             fetch(url,{
               method: "GET"
             })
@@ -89,7 +93,7 @@ export default class home extends Component{
               let avg=0;
               let sum=0;
               let devarr=[];
-              let urlnew='https://sandbox.iexapis.com/stable/stock/'+response.symbol+'/chart/5y?token=Tpk_57e77d563cb543d6971bd4f479ad64e9';
+              let urlnew='https://sandbox.iexapis.com/stable/stock/'+response.symbol+'/chart/1y?token=Tpk_96d9d438d78b4a3fbc67ab52de7ac67e';
               fetch(urlnew,{
                 method: "GET"
               })
@@ -101,11 +105,22 @@ export default class home extends Component{
                   devarr.push((resp[i].high+resp[i].low)/2.000000);
                 }
                 avg=sum/(resp.length-1);
-                favs.push(<span id={response.symbol} onClick={this.displayGraph}>{response.companyName+" Price: "+response.latestPrice+" 5Y Avg. Price : $"+Math.round(avg)+"  5Y Std. Dev.: $"+Math.round(std(devarr))}</span>);
-                favs.push(<br></br>);
-                this.setState({
-                  favorites:favs
-                });
+                console.log(devarr);
+                if(devarr.length>25){
+                  favs.push(<span id={response.symbol} onClick={this.displayGraph}>{response.companyName+" Price: "+response.latestPrice+" 1Y Avg. Price : $"+Math.round(avg)+"  1Y Std. Dev.: $"+Math.round(std(devarr))}</span>);
+                  favs.push(<br></br>);
+                  this.setState({
+                    favorites:favs
+                  });
+                }
+                else{
+                  alert("Not enough data to display avg price or std dev");
+                  favs.push(<span id={response.symbol} onClick={this.displayGraph}>{response.companyName+" Price: "+response.latestPrice}</span>);
+                  favs.push(<br></br>);
+                  this.setState({
+                    favorites:favs
+                  });
+                }
               })
             });
         }
@@ -209,27 +224,42 @@ export default class home extends Component{
         let avg=0;
         let sum=0;
         let devarr=[];
-        let urlnew='https://sandbox.iexapis.com/stable/stock/'+response.symbol+'/chart/5y?token=Tpk_57e77d563cb543d6971bd4f479ad64e9';
+        let urlnew='https://sandbox.iexapis.com/stable/stock/'+response.symbol+'/chart/1y?token=Tpk_57e77d563cb543d6971bd4f479ad64e9';
         fetch(urlnew,{
           method: "GET"
         })
         .then(res=>res.json())
         .then(resp=>{
-          console.log(resp);
           for(let i=0; i<resp.length;++i){
             sum+=(resp[i].high+resp[i].low)/2.000000;
             devarr.push((resp[i].high+resp[i].low)/2.000000);
           }
           avg=sum/(resp.length-1);
-          let metrics=React.createElement("div",{
-          }, React.createElement("span",{
-            id:response.symbol,
-            onClick:this.displayGraph,
-          },response.companyName+" Current Price: $" +response.latestPrice+" 5Y Avg. Price : $"+Math.round(avg)+"  5Y Std. Dev.: $"+Math.round(std(devarr))),
-          React.createElement("button",{
-            className:response.symbol,
-            onClick:this.addFavorite,
-          }, "Add favorite"))
+          console.log(devarr);
+          let metrics;
+          if(devarr.length<25){
+            alert("Not enough data to display avg price or std dev");
+            metrics=React.createElement("div",{
+            }, React.createElement("span",{
+              id:response.symbol,
+              onClick:this.displayGraph,
+            },response.companyName+" Current Price: $" +response.latestPrice),
+            React.createElement("button",{
+              className:response.symbol,
+              onClick:this.addFavorite,
+            }, "Add favorite"))
+          }
+          else{
+            metrics=React.createElement("div",{
+            }, React.createElement("span",{
+              id:response.symbol,
+              onClick:this.displayGraph,
+            },response.companyName+" Current Price: $" +response.latestPrice+" 1Y Avg. Price : $"+Math.round(avg)+"  1Y Std. Dev.: $"+Math.round(std(devarr))),
+            React.createElement("button",{
+              className:response.symbol,
+              onClick:this.addFavorite,
+            }, "Add favorite"))
+          }
           ReactDOM.render(metrics, document.getElementById("metrics"));
         })
         
@@ -253,11 +283,24 @@ export default class home extends Component{
           }
         });
     };
+    logout=()=>{
+      window.location.href="http://localhost:3000/login";
+      this.props.location.state=undefined;
+    }
     render(){
        
         return(
         <div className="App">
           <h1>Your Portfolio</h1>
+          <button onClick={this.logout}>Logout</button>
+          <Link
+          to={{
+            pathname:"/changepassword",
+            state:this.props.location.state
+         }}className="button">
+          Change Password
+          </Link>
+          
           <h3>Invite a New User</h3>
           Email:<input onChange={this.onChangeEmail} type="text" value={this.state.email}></input>
             <button type="submit" onClick={this.email}>Invite A New User</button>
@@ -271,10 +314,6 @@ export default class home extends Component{
             Ticker:<input onChange={this.onChangeTicker} type="text" value={this.state.ticker}></input>
             <button type="submit" onClick={this.submit}>Search</button>
             <h4>Click on a ticker to display its 5 year graph.</h4>
-
-            
-            
-            
         </div>
         )   
     }
