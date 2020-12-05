@@ -14,7 +14,7 @@ import {
     useRouteMatch,
     useParams
   } from "react-router-dom";
-  //The idea for this graph came from FILL IN LINK HERE
+  //The idea for this graph came fro Plotly https://plotly.com/javascript/time-series/ We refactored it from vanilla JS to work with React
   class Graph extends Component {
     constructor(props){
       super(props);
@@ -57,6 +57,7 @@ import {
       />
       );
     }
+    // This is where our use of the plotly tutorial ends
       
     
   }
@@ -83,7 +84,7 @@ export default class home extends Component{
         console.log(res);
         let favs=[];
         for(let i=0; i<res.data.length;++i){
-            let url ='https://sandbox.iexapis.com/stable/stock/'+res.data[i].ticker+'/quote?token=Tpk_57e77d563cb543d6971bd4f479ad64e9';
+            let url ='https://cloud.iexapis.com/stable/stock/'+res.data[i].ticker+'/quote?token=pk_7d72a71412b146ea96f936adc3facb39'
             fetch(url,{
               method: "GET"
             })
@@ -93,7 +94,7 @@ export default class home extends Component{
               let avg=0;
               let sum=0;
               let devarr=[];
-              let urlnew='https://sandbox.iexapis.com/stable/stock/'+response.symbol+'/chart/1y?token=Tpk_96d9d438d78b4a3fbc67ab52de7ac67e';
+              let urlnew='https://cloud.iexapis.com/stable/stock/'+response.symbol+'/chart/1Y?token=pk_5af41a60dd00449ea785c13de16a82be'
               fetch(urlnew,{
                 method: "GET"
               })
@@ -141,7 +142,7 @@ export default class home extends Component{
     displayGraph= (e)=>{
       console.log(e.target.id);
       let rows;
-      let url='https://sandbox.iexapis.com/stable/stock/'+e.target.id+'/chart/5y?token=Tpk_96d9d438d78b4a3fbc67ab52de7ac67e';
+      let url='https://cloud.iexapis.com/stable/stock/'+e.target.id+'/chart/5Y?token=pk_7d72a71412b146ea96f936adc3facb39'
       fetch(url,{
         method: "GET"
       })
@@ -153,6 +154,7 @@ export default class home extends Component{
         }
         else{
           rows=response;
+          // This code is adapted from Plotly Time Series https://plotly.com/javascript/time-series/. We refactored it from vanilla JS to work with React
           function unpack(rows, key) {
             return rows.map(function(row) { return row[key]; });
           }
@@ -174,7 +176,7 @@ export default class home extends Component{
             line: {color: '#7F7F7F'}
           }
           var data = [trace1,trace2];
-          
+          // End of Plotly tutorial use
           console.log("clicked");
           ReactDOM.render(
             <Graph data ={data}/>,
@@ -205,7 +207,7 @@ export default class home extends Component{
     }
     submit = ()=>{
       let status=true;
-      let url ='https://sandbox.iexapis.com/stable/stock/'+this.state.ticker+'/quote?token=Tpk_96d9d438d78b4a3fbc67ab52de7ac67e';
+      let url ='https://cloud.iexapis.com/stable/stock/'+this.state.ticker+'/quote?token=pk_5af41a60dd00449ea785c13de16a82be'
       fetch(url,{
         method: "GET"
       })
@@ -224,7 +226,7 @@ export default class home extends Component{
         let avg=0;
         let sum=0;
         let devarr=[];
-        let urlnew='https://sandbox.iexapis.com/stable/stock/'+response.symbol+'/chart/1y?token=Tpk_57e77d563cb543d6971bd4f479ad64e9';
+        let urlnew='https://cloud.iexapis.com/stable/stock/'+response.symbol+'/chart/1Y?token=pk_7d72a71412b146ea96f936adc3facb39'
         fetch(urlnew,{
           method: "GET"
         })
@@ -268,7 +270,7 @@ export default class home extends Component{
     email = ()=>{
       Axios.post('http://localhost:3456/email', {
             email:this.state.email,
-            url:window.location.href
+            url: "http://localhost:3000/createuser"
         })
         .then(function(response){
           console.log(response);
@@ -314,7 +316,10 @@ export default class home extends Component{
             Ticker:<input onChange={this.onChangeTicker} type="text" value={this.state.ticker}></input>
             <button type="submit" onClick={this.submit}>Search</button>
             <h4>Click on a ticker to display its 5 year graph.</h4>
+
+            <a href="https://iexcloud.io">Data provided by IEX Cloud</a>
         </div>
+    
         )   
     }
 }
