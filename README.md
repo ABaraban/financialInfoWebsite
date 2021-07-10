@@ -1,50 +1,6 @@
-# CSE330
-### Student IDs:
-Asher Baraban: 474257 <br>
-Henry Shuster: 475902
+# Creative Project for WashU course Rapid Prototyping and Development
 
-## Rubric
+This website utilizes iex cloud api to display financial data. From that data, we calculated popular financial metrics like volatility, average price. The site also has a database so that users can login and see the performance of their portfolio. For logging in, we used security best practices like salting and hashing passwords. We also used Plotly to display professional financial plots for users to visualize stock price over time. I created this website with Henry Shuster.
 
-Languages/Frameworks Used (25 points):
-<ol>
- <list> React (10 Points)</list> <br> 
- <list>Express (10 Points)</list> <br> 
- <list> MySQL (0 Points)</list> <br>
- <list> Rest/iex Cloud API (5 Points)</list> <br>
-</ol>
-<br>
-Functionality (44 Points): <br><br>
- <ol>
-  <list>User can register, login, logout (10 Points)</list> <br>
-  <list>Users can change their Password (5 Points)</list> <br>
-  <list>Invite a user to the site with an email (5 Points)</list> <br>
-  <list>Relational Database is configured with foreign keys etc. (4 Points)</list> <br>
-  <list>Historical data is accessed using a REST api(iex cloud) (5 Points)</list> <br>
-  <list>Users can calculate average price of a stock over a given time (5 points)</list> <br>
-  <list>Users can calculate variance/std dev. of the stock price over a given time(5 points) </list><br>
-  <list>Users can add a holding, which will be displayed when they log in (5 points)</list> <br>
- </ol>
-<br>
-Best Practices (10 Points): <br><br>
-<ol>
-  <list>Passwords are Salted and Hashed (2 Points)</list> <br>
-  <list>Pages Pass HTML Validators (2 Points)</list> <br>
-  <list>Code is well formatted and easy to read (3 Points)</list> <br>
-  <list>Site is easy to navigate (3 Points)</list> <br>
-<br>
-</ol>
-Creative Portion (16 Points):<br><br>
 
- Option 1 (16 points):<br>
- <ol>
- <list>Site displays a plot of historical data (16 Points)</list> <br>
- </ol>
- Option 2 (16 points):<br>
- <ol>
- <list>Users can add number of shares of a holding (5 Points) </list> <br>
- <list>Users can see their earnings and losses on the day (6 Points)</list> <br>
- <list>Add another metric (P/E ratio etc.) to the website (5 Points) </list><br>
-</ol>
- 
-Turn in rubric on time (5 Points)
-TA Approval 11/22: TA Name: Clay Mudter
+
